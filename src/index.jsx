@@ -20,6 +20,22 @@ class NotesApp extends React.Component {
         };
     }
 
+    onAddEventHandler = ({ title, body }) => {
+        const newNote = {
+            id: this.state.notes.length + 1,
+            title,
+            body,
+            createdAt: new Date().toISOString(),
+            archived: false,
+        };
+        const updatedNotes = [...this.state.notes, newNote];
+        this.setState({
+            notes: updatedNotes,
+            activeNotes: updatedNotes.filter((note) => !note.archived),
+            archivedNotes: updatedNotes.filter((note) => note.archived),
+        });
+    };
+
     onDeleteEventHandler = (id) => {
         const updatedNotes = this.state.notes.filter((note) => note.id !== id);
         this.setState({
@@ -39,6 +55,8 @@ class NotesApp extends React.Component {
 
         this.setState({
             notes: updatedNotes,
+            activeNotes: updatedNotes.filter((note) => !note.archived),
+            archivedNotes: updatedNotes.filter((note) => note.archived),
         });
     };
 
@@ -47,7 +65,7 @@ class NotesApp extends React.Component {
             <>
                 <Header />
                 <Body>
-                    <NoteInput />
+                    <NoteInput add={this.onAddEventHandler} />
                     <h2>Catatan Aktif</h2>
                     <NotesList
                         notes={this.state.activeNotes}

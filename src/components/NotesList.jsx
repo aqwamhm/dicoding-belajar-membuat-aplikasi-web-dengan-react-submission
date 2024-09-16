@@ -3,6 +3,11 @@ import NoteItem from "./NoteItem";
 
 class NotesList extends React.Component {
     render() {
+        if (!this.props.notes.length) {
+            return (
+                <p className="notes-list__empty-message">Tidak ada catatan</p>
+            );
+        }
         return (
             <div className="notes-list">
                 {this.props.notes.map((note) => {
