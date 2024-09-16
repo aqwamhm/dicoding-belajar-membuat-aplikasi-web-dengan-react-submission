@@ -20,7 +20,7 @@ class NotesApp extends React.Component {
 
     onAddEventHandler = ({ title, body }) => {
         const newNote = {
-            id: this.state.notes.length + 1,
+            id: +new Date(),
             title,
             body,
             createdAt: new Date().toISOString(),
