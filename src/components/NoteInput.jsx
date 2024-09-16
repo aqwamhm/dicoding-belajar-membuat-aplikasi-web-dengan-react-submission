@@ -26,6 +26,8 @@ class NoteInput extends React.Component {
             title: this.state.title,
             body: this.state.body,
         });
+
+        this.setState({ title: "", body: "" });
     };
 
     render() {
