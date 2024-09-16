@@ -11,9 +11,9 @@ class NoteInput extends React.Component {
     }
 
     onTitleChangeEventHandler = (event) => {
-        if (event.target.value.length <= this.state.maxTitleCharacters) {
-            this.setState({ title: event.target.value });
-        }
+        this.setState({
+            title: event.target.value.slice(0, this.state.maxTitleCharacters),
+        });
     };
 
     onBodyChangeEventHandler = (event) => {
