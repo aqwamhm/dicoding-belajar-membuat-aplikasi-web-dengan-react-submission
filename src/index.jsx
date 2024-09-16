@@ -1,5 +1,4 @@
 import { createRoot } from "react-dom/client";
-
 import "./styles/style.css";
 import React from "react";
 import Header from "./components/Header";
@@ -14,9 +13,8 @@ class NotesApp extends React.Component {
 
         const notes = getInitialData();
         this.state = {
-            notes,
-            activeNotes: notes.filter((note) => !note.archived),
-            archivedNotes: notes.filter((note) => note.archived),
+            notes: notes,
+            filter: "",
         };
     }
 
@@ -31,8 +29,6 @@ class NotesApp extends React.Component {
         const updatedNotes = [...this.state.notes, newNote];
         this.setState({
             notes: updatedNotes,
-            activeNotes: updatedNotes.filter((note) => !note.archived),
-            archivedNotes: updatedNotes.filter((note) => note.archived),
         });
     };
 
@@ -40,8 +36,6 @@ class NotesApp extends React.Component {
         const updatedNotes = this.state.notes.filter((note) => note.id !== id);
         this.setState({
             notes: updatedNotes,
-            activeNotes: updatedNotes.filter((note) => !note.archived),
-            archivedNotes: updatedNotes.filter((note) => note.archived),
         });
     };
 
@@ -55,26 +49,39 @@ class NotesApp extends React.Component {
 
         this.setState({
             notes: updatedNotes,
-            activeNotes: updatedNotes.filter((note) => !note.archived),
-            archivedNotes: updatedNotes.filter((note) => note.archived),
         });
     };
 
+    onChangeFilterHandler = (value) => {
+        this.setState({ filter: value });
+    };
+
     render() {
+        const { filter, notes } = this.state;
+
+        const filteredNotes = notes.filter(
+            (note) =>
+                note.title.toLowerCase().includes(filter.toLowerCase()) ||
+                note.body.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        const activeNotes = filteredNotes.filter((note) => !note.archived);
+        const archivedNotes = filteredNotes.filter((note) => note.archived);
+
         return (
             <>
-                <Header />
+                <Header changeFilter={this.onChangeFilterHandler} />
                 <Body>
                     <NoteInput add={this.onAddEventHandler} />
                     <h2>Catatan Aktif</h2>
                     <NotesList
-                        notes={this.state.activeNotes}
+                        notes={activeNotes}
                         delete={this.onDeleteEventHandler}
                         updateArchived={this.onUpdateArchivedEventHandler}
                     />
                     <h2>Arsip</h2>
                     <NotesList
-                        notes={this.state.archivedNotes}
+                        notes={archivedNotes}
                         delete={this.onDeleteEventHandler}
                         updateArchived={this.onUpdateArchivedEventHandler}
                     />

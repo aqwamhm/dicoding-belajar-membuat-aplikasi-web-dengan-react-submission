@@ -6,7 +6,7 @@ class Header extends React.Component {
         return (
             <div className="note-app__header">
                 <h1>Notes</h1>
-                <SearchInput />
+                <SearchInput changeFilter={this.props.changeFilter} />
             </div>
         );
     }
